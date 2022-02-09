@@ -21,10 +21,18 @@ async function run() {
         await client.connect();
         const foodsCollection = client.db("yooda-hostel").collection("foodss");
         const usersCollection = client.db("yooda-hostel").collection("users");
+        const studentsCollection = client.db("yooda-hostel").collection("students");
         const distributionsCollection = client.db("yooda-hostel").collection("distributions");
 
         // save students api worked
         app.post('/student', async (req, res) => {
+            const data = req.body;
+            const result = await studentsCollection.insertOne(data);
+
+            res.json(result);
+        })
+        // save users api worked
+        app.post('/users', async (req, res) => {
             const data = req.body;
             const result = await usersCollection.insertOne(data);
 
@@ -39,7 +47,7 @@ async function run() {
             res.json(result);
         })
 
-        //post api for add distribution
+        // add distribution worked
         app.post("/distribution", async (req, res) => {
             const distribution = req.body;
 
