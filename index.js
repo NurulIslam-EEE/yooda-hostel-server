@@ -85,6 +85,55 @@ async function run() {
         });
 
 
+        // status update worked
+        app.put('/students', async (req, res) => {
+            const id = req.body.id;
+            const status = req.body.status;
+            const filter = { _id: ObjectId(id) };
+
+            const updateDoc = {
+                $set: {
+                    status: status
+                },
+            };
+            const result = await studentsCollection.updateOne(filter, updateDoc)
+
+            res.json(result)
+            console.log(status, id)
+        })
+        //delete foods worked
+        app.delete('/foods/:id', async (req, res) => {
+            const id = req.params.id;
+            const query = { _id: ObjectId(id) };
+            const result = await foodsCollection.deleteOne(query);
+            res.send(result);
+        })
+
+        //get single foods worked
+        app.get('/foods/:id', async (req, res) => {
+            const id = req.params.id;
+            const query = { _id: ObjectId(id) };
+            const result = await foodsCollection.findOne(query);
+            res.send(result);
+        });
+
+        // update food  worked
+        app.put('/foods/:id', async (req, res) => {
+            const id = req.params.id;
+            const updatedProduct = req.body;
+            const filter = { _id: ObjectId(id) };
+
+            const updateDoc = {
+                $set: {
+                    foodId: updatedProduct.id,
+                    name: updatedProduct.name,
+                    price: updatedProduct.price
+                },
+            };
+            const result = await foodsCollection.updateOne(filter, updateDoc)
+            console.log('updating', id)
+            res.json(result)
+        })
 
         //update user
         app.put('/users', async (req, res) => {
@@ -146,42 +195,6 @@ async function run() {
 
 
 
-
-
-
-
-
-        app.delete('/blogs/:id', async (req, res) => {
-            const id = req.params.id;
-            const query = { _id: ObjectId(id) };
-            const result = await blogsCollection.deleteOne(query);
-            res.send(result);
-        })
-
-        // rating update
-        app.put('/rating', async (req, res) => {
-            const id = req.body.id;
-            const rating = req.body.blogRating;
-            const filter = { _id: ObjectId(id) };
-            const options = { upsert: true };
-            const updateDoc = {
-                $set: {
-                    rating: rating
-                },
-            };
-            const result = await blogsCollection.updateOne(filter, updateDoc, options)
-
-            res.json(result)
-            console.log(rating, id)
-        })
-
-        //GET Dynamic (blog)
-        app.get('/blogs/:id', async (req, res) => {
-            const id = req.params.id;
-            const query = { _id: ObjectId(id) };
-            const result = await blogsCollection.findOne(query);
-            res.send(result);
-        });
         // update
         app.put('/blogs/:id', async (req, res) => {
             const id = req.params.id;
@@ -203,23 +216,7 @@ async function run() {
             console.log('updating', id)
             res.json(result)
         })
-        // update
-        app.put('/blogs/:id', async (req, res) => {
-            const id = req.params.id;
-            const updatedProduct = req.body;
-            const filter = { _id: ObjectId(id) };
-            const options = { upsert: true };
-            const updateDoc = {
-                $set: {
-                    name: updatedProduct.name,
-                    price: updatedProduct.price,
-                    quantity: updatedProduct.quantity
-                },
-            };
-            const result = await userCollection.updateOne(filter, updateDoc, options)
-            console.log('updating', id)
-            res.json(result)
-        })
+
         //update review status 
         app.put('/blogStatus/:id', async (req, res) => {
             const id = req.params.id;
