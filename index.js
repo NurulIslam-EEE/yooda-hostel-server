@@ -118,6 +118,13 @@ async function run() {
             const result = await foodsCollection.deleteOne(query);
             res.send(result);
         })
+        //delete students worked
+        app.delete('/students/:id', async (req, res) => {
+            const id = req.params.id;
+            const query = { _id: ObjectId(id) };
+            const result = await studentsCollection.deleteOne(query);
+            res.send(result);
+        })
 
         //get single foods worked
         app.get('/foods/:id', async (req, res) => {
