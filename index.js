@@ -56,8 +56,24 @@ async function run() {
             res.json(result);
         });
 
-
-
+        //get students worked
+        app.get('/students', async (req, res) => {
+            const cursor = studentsCollection.find({});
+            const result = await cursor.toArray();
+            res.json(result)
+        })
+        // get foods collection worked
+        app.get("/foods", async (req, res) => {
+            const cursor = foodsCollection.find({});
+            const foods = await cursor.toArray();
+            res.send(foods);
+        });
+        //get distributionsCollection worked
+        app.get("/distributions", async (req, res) => {
+            const cursor = distributionsCollection.find({});
+            const distributions = await cursor.toArray();
+            res.send(distributions);
+        });
 
 
 
@@ -72,12 +88,7 @@ async function run() {
             console.log(result);
         })
 
-        //get
-        app.get('/users', async (req, res) => {
-            const cursor = usersCollection.find({});
-            const result = await cursor.toArray();
-            res.json(result)
-        })
+
 
         // app.get('/users/:email', async (req, res) => {
         //     const email = req.params.email;
@@ -130,12 +141,7 @@ async function run() {
 
 
 
-        // blog collection
-        app.get("/blogs", async (req, res) => {
-            const cursor = blogsCollection.find({});
-            const blogs = await cursor.toArray();
-            res.send(blogs);
-        });
+
         app.delete('/blogs/:id', async (req, res) => {
             const id = req.params.id;
             const query = { _id: ObjectId(id) };
@@ -159,12 +165,7 @@ async function run() {
             res.json(result)
             console.log(rating, id)
         })
-        // GET API for show data
-        app.get("/blogs", async (req, res) => {
-            const cursor = blogsCollection.find({});
-            const blog = await cursor.toArray();
-            res.send(blog);
-        });
+
         //GET Dynamic (blog)
         app.get('/blogs/:id', async (req, res) => {
             const id = req.params.id;
@@ -225,12 +226,7 @@ async function run() {
             res.json(result)
         })
 
-        // GET API for show review
-        app.get("/review", async (req, res) => {
-            const cursor = reviewsCollection.find({});
-            const review = await cursor.toArray();
-            res.send(review);
-        });
+
         //update review status 
         app.put('/review/:id', async (req, res) => {
             const id = req.params.id;
