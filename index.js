@@ -58,9 +58,19 @@ async function run() {
 
         //get students worked
         app.get('/students', async (req, res) => {
+            const page = req.query.page;
+            const size = parseInt(req.query.size);
             const cursor = studentsCollection.find({});
-            const result = await cursor.toArray();
-            res.json(result)
+            const count = await cursor.count();
+            let students;
+            if (page) {
+                students = await cursor.skip(page * size).limit(size).toArray();
+            } else {
+                students = await cursor.toArray();
+            }
+
+            res.send({ students, count });
+
         })
         // get foods collection worked
         app.get("/foods", async (req, res) => {
