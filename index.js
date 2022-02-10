@@ -64,9 +64,18 @@ async function run() {
         })
         // get foods collection worked
         app.get("/foods", async (req, res) => {
+            const page = req.query.page;
+            const size = parseInt(req.query.size);
             const cursor = foodsCollection.find({});
-            const foods = await cursor.toArray();
-            res.send(foods);
+            const count = await cursor.count();
+            let foods;
+            if (page) {
+                foods = await cursor.skip(page * size).limit(size).toArray();
+            } else {
+                foods = await cursor.toArray();
+            }
+
+            res.send({ foods, count });
         });
         //get distributionsCollection worked
         app.get("/distributions", async (req, res) => {
